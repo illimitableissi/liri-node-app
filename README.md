@@ -13,21 +13,22 @@ movie-this
 
 do-what-it-says
 
-Technology Used:
+#### Technology Used:
+* Javascript
+* Nodejs
+* Node packages:
+* fs
+* Node-Spotify-API
+* Axios
+* Moment
+* DotEnv
 
-Javascript
-Nodejs
-Node packages:
-fs
-Node-Spotify-API
-Axios
-Moment
-DotEnv
-APIs used:
-Bands in Town
-OMDB
 
-Step by Step instructions
+#### APIs used:
+* Bands in Town
+* OMDB
+
+## Step by Step instructions
 
 Open your terminal (e.g. Git Bash).
 
@@ -59,6 +60,7 @@ If the user doesn't type a movie in, the program will output data for the movie 
 ### concert-this command
 
  node liri.js concert-this "name of artist or band"
+
 Output: The system will display a list of all events where the artist or band will perform. The name of the venue, location, and date of the event will be shown.
 
 ![screenshot](https://illimitableissi.github.io/liri-node-app/screenshots/concert.PNG)
@@ -66,6 +68,7 @@ Output: The system will display a list of all events where the artist or band wi
 ### spotify-this-song command
 
  node liri.js spotify-this-song "name of song"
+
 Output: The system will display the Artist Name, Song Name, Preview link of the song from Spotify and the album that the song is from.
 
 ![screenshot](https://illimitableissi.github.io/liri-node-app/screenshots/song.PNG)
@@ -74,6 +77,7 @@ Output: The system will display the Artist Name, Song Name, Preview link of the 
 ### do-what-it-says command
 
  node liri.js do-what-it-says
+
 Output: The system will read the text in the random.txt file, and perform the command listed in the random.txt file. This case being spotify-this-song "I Want it That Way"
 
 ![screenshot](https://illimitableissi.github.io/liri-node-app/screenshots/dowhatitsays.PNG)
