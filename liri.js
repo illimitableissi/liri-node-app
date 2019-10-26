@@ -28,6 +28,12 @@ function movie(userInput) {
 axios.get(`https://www.omdbapi.com/?apikey=trilogy&t=${userInput}&type=movie`).then(
   function(response) {
 
+if (!userInput) {
+    console.log("If you haven't watched Mr. Nobody, then you should: http://www.imdb.com/title/tt0485947/")
+    console.log("Its on Netflix!")
+    
+}
+
 var movie = response.data
 var movieInfo = 
     `Movie Title: ${movie.Title}
@@ -45,7 +51,7 @@ fs.appendFile("log.txt", movieInfo, function() {});
   })
   .catch(function(error) {
     if (error.response) {
-        console.log("If you haven't watched Mr. Nobody, then you should: http://www.imdb.com/title/tt0485947/")
+        console.log(error)
     }
   });
 }
@@ -56,26 +62,17 @@ function song(userInput) {
 var spotify = new Spotify(keys.spotify);
  
 spotify.search({ type: 'track', query: userInput}, function(err, data) {
-    for (var i = 0; i < 5; i++)  {
 
         var songData =       
-        `Artist Name: ${data.tracks.items[i].artists[0].name}
-        Song Name: ${data.tracks.items[i].name}
-        Album: ${data.tracks.items[i].album.name}
-        Preview Link: ${data.tracks.items[i].preview_url}
+        `Artist Name: ${data.tracks.items[0].artists[0].name}
+        Song Name: ${data.tracks.items[0].name}
+        Album: ${data.tracks.items[0].album.name}
+        Preview Link: ${data.tracks.items[0].preview_url}
         `
     console.log(songData)
     fs.appendFile("log.txt", songData, function() {});
 
-    }
-
-  if (err) {
-    return console.log('Error occurred: ' + err);
-  }
- 
- 
-});
-
+    });
 }
 
 
@@ -105,14 +102,7 @@ axios.get(`https://rest.bandsintown.com/artists/${userInput}/events?app_id=codin
 function dowhatitsays() {
 
 fs.readFile("random.txt", "utf8", function(error, data) {
-    
-    if (error) {
-        return console.log(error);
-      }
-    var output = data.split(",");
-    for (var i = 0; i < output.length; i++) {
-        console.log(output[i])
-    }
+    song()    
 });
 
 }
