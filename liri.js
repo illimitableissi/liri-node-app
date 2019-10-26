@@ -63,6 +63,8 @@ var spotify = new Spotify(keys.spotify);
  
 spotify.search({ type: 'track', query: userInput}, function(err, data) {
 
+    //if user input is more than one word, concatenate reply
+
         var songData =       
         `Artist Name: ${data.tracks.items[0].artists[0].name}
         Song Name: ${data.tracks.items[0].name}
@@ -77,6 +79,7 @@ spotify.search({ type: 'track', query: userInput}, function(err, data) {
 
 
 function concert(userInput) {
+  
 
 axios.get(`https://rest.bandsintown.com/artists/${userInput}/events?app_id=codingbootcamp`).then(
     function(response) {
@@ -99,11 +102,18 @@ axios.get(`https://rest.bandsintown.com/artists/${userInput}/events?app_id=codin
 }
 
 
-function dowhatitsays() {
+function dowhatitsays(data) {
 
 fs.readFile("random.txt", "utf8", function(error, data) {
-    song()    
-});
 
+    if (error) {
+        return console.log(error);
+    }
+    var dataArr = data.split(",")
+    console.log(dataArr)
+    song(dataArr[1]);
+});
+    
 }
+
 
