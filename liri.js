@@ -25,52 +25,46 @@ switch (command) {
 
 function movie(userInput) {
 
-axios.get(`https://www.omdbapi.com/?apikey=trilogy&t=${userInput}&type=movie`).then(
-  function(response) {
+    axios.get(`https://www.omdbapi.com/?apikey=trilogy&t=${userInput}&type=movie`).then(
+    function(response) {
 
-if (!userInput) {
-    console.log("If you haven't watched Mr. Nobody, then you should: http://www.imdb.com/title/tt0485947/")
-    console.log("Its on Netflix!")
-    
-}
+        if (!userInput) {
+            console.log("If you haven't watched Mr. Nobody, then you should: http://www.imdb.com/title/tt0485947/")
+            console.log("Its on Netflix!")
+        }
 
-var movie = response.data
-var movieInfo = 
-    `Movie Title: ${movie.Title}
-    Year: ${movie.Year}
-    IMDB Rating: ${movie.imdbRating}
-    Rotten Tomatoes Rating: ${movie.Ratings[1].Value}
-    Country: ${movie.Country}
-    Language: ${movie.Language}
-    Plot: ${movie.Plot}
-    Actors: ${movie.Actors}`
+        var movie = response.data
+        var movieInfo = 
+             `Movie Title: ${movie.Title}
+             Year: ${movie.Year}
+             IMDB Rating: ${movie.imdbRating}
+             Rotten Tomatoes Rating: ${movie.Ratings[1].Value}
+             Country: ${movie.Country}
+             Language: ${movie.Language}
+             Plot: ${movie.Plot}
+             Actors: ${movie.Actors}`
 
-console.log(movieInfo);
-fs.appendFile("log.txt", movieInfo, function() {});
+            console.log(movieInfo);
+            fs.appendFile("log.txt", movieInfo, function() {});
 
-  })
-  .catch(function(error) {
-    if (error.response) {
-        console.log(error)
-    }
-  });
+        }).catch(function(error) {
+            if (error.response) {
+            console.log(error)
+            }
+        });
 }
 
 
 function song(userInput) {
- 
-var spotify = new Spotify(keys.spotify);
- 
-spotify.search({ type: 'track', query: userInput}, function(err, data) {
 
-    //if user input is more than one word, concatenate reply
-
+    var spotify = new Spotify(keys.spotify);
+ 
+    spotify.search({ type: 'track', query: userInput}, function(err, data) {
         var songData =       
-        `Artist Name: ${data.tracks.items[0].artists[0].name}
-        Song Name: ${data.tracks.items[0].name}
-        Album: ${data.tracks.items[0].album.name}
-        Preview Link: ${data.tracks.items[0].preview_url}
-        `
+         `Artist Name: ${data.tracks.items[0].artists[0].name}
+         Song Name: ${data.tracks.items[0].name}
+         Album: ${data.tracks.items[0].album.name}
+         Preview Link: ${data.tracks.items[0].preview_url}`
     console.log(songData)
     fs.appendFile("log.txt", songData, function() {});
 
@@ -104,15 +98,14 @@ axios.get(`https://rest.bandsintown.com/artists/${userInput}/events?app_id=codin
 
 function dowhatitsays(data) {
 
-fs.readFile("random.txt", "utf8", function(error, data) {
+    fs.readFile("random.txt", "utf8", function(error, data) {
 
-    if (error) {
-        return console.log(error);
-    }
-    var dataArr = data.split(",")
-    console.log(dataArr)
-    song(dataArr[1]);
-});
+        if (error) {
+            return console.log(error);
+        }
+            var dataArr = data.split(",")
+            song(dataArr[1]);
+    });
     
 }
 
