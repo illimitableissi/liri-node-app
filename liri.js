@@ -2,6 +2,8 @@ require("dotenv").config();
 var keys = require("./keys.js");
 var fs = require("fs");
 var axios = require("axios");
+var Spotify = require('node-spotify-api');
+var moment = require('moment');
 var command = process.argv[2];
 var userInput = process.argv[3];
 
@@ -27,7 +29,7 @@ axios.get(`https://www.omdbapi.com/?apikey=trilogy&t=${userInput}&type=movie`).t
   function(response) {
 
 var movie = response.data
-console.log(
+var movieInfo = 
     `Movie Title: ${movie.Title}
     Year: ${movie.Year}
     IMDB Rating: ${movie.imdbRating}
@@ -36,7 +38,9 @@ console.log(
     Language: ${movie.Language}
     Plot: ${movie.Plot}
     Actors: ${movie.Actors}`
-);
+
+console.log(movieInfo);
+fs.appendFile("log.txt", movieInfo, function() {});
 
   })
   .catch(function(error) {
@@ -48,17 +52,28 @@ console.log(
 
 
 function song(userInput) {
-
-var Spotify = require('node-spotify-api');
  
 var spotify = new Spotify(keys.spotify);
  
-spotify.search({ type: 'track', query: 'Secrets', limit:1 }, function(err, data) {
+spotify.search({ type: 'track', query: userInput}, function(err, data) {
+    for (var i = 0; i < 5; i++)  {
+
+        var songData =       
+        `Artist Name: ${data.tracks.items[i].artists[0].name}
+        Song Name: ${data.tracks.items[i].name}
+        Album: ${data.tracks.items[i].album.name}
+        Preview Link: ${data.tracks.items[i].preview_url}
+        `
+    console.log(songData)
+    fs.appendFile("log.txt", songData, function() {});
+
+    }
+
   if (err) {
     return console.log('Error occurred: ' + err);
   }
  
-  console.log(JSON.stringify(data, null, 2)); 
+ 
 });
 
 }
@@ -66,17 +81,18 @@ spotify.search({ type: 'track', query: 'Secrets', limit:1 }, function(err, data)
 
 function concert(userInput) {
 
-var moment = require('moment');
-
 axios.get(`https://rest.bandsintown.com/artists/${userInput}/events?app_id=codingbootcamp`).then(
     function(response) {
         for (var i = 0; i < response.data.length; i++) {
     
         var timeFormat = moment(response.data[i].datetime).format("MM/DD/YYYY")
-          console.log(
-              `Venue Name: ${response.data[i].venue.name} 
-              Location (City): ${response.data[i].venue.city} 
-               Date of the Event: ${timeFormat}`)
+        var concertInfo = 
+        `Venue Name: ${response.data[i].venue.name} 
+        Location (City): ${response.data[i].venue.city} 
+        Date of the Event: ${timeFormat}`
+          
+        console.log(concertInfo)
+        fs.appendFile("log.txt", concertInfo, function() {});
            }
         })          
 
@@ -86,34 +102,18 @@ axios.get(`https://rest.bandsintown.com/artists/${userInput}/events?app_id=codin
 }
 
 
-function dowhatitsays(userInput) {
+function dowhatitsays() {
 
 fs.readFile("random.txt", "utf8", function(error, data) {
-    console.log(data)
-
-    // If the code experiences any errors it will log the error to the console.
+    
     if (error) {
-      return console.log(error);
+        return console.log(error);
+      }
+    var output = data.split(",");
+    for (var i = 0; i < output.length; i++) {
+        console.log(output[i])
     }
-  
-    // We will then print the contents of data
-    var dataArr = data.split(',');
-        song(dataArr[0], dataArr[1]);
 });
 
-
-// // Next, we store the text given to us from the command line.
-// var text = process.argv[2];
-
-// // Next, we append the text into the "sample.txt" file.
-// // If the file didn't exist, then it gets created on the fly.
-// fs.appendFile("log.txt", text, function(err) {
-
-//   // If an error was experienced we will log it.
-//   if (err) {
-//     console.log(err);
-//   }
-
-// });
-
 }
+
