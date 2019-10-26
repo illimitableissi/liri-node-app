@@ -1,9 +1,2 @@
 spotify-this-song,"I Want it That Way"
 
-
-OMDB API:
-Here is your key: b71e3c2d
-
-Please append it to all of your API requests,
-
-OMDb API: http://www.omdbapi.com/?i=tt3896198&apikey=b71e3c2d

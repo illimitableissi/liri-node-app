@@ -2,23 +2,36 @@ require("dotenv").config();
 var keys = require("./keys.js");
 var fs = require("fs");
 var axios = require("axios");
+var userInput = process.argv[2];
 
 
 function movie() {
 
-var omdbAPI = keys.omdb
-
-axios.get(`http://www.omdbapi.com/s=RealSteel&apikey=${omdbAPI}`).then(
+axios.get(`https://www.omdbapi.com/?apikey=trilogy&t=${userInput}&type=movie`).then(
   function(response) {
 
-    console.log("The movie's rating is: " + response.data.imdbRating);
+var movie = response.data
+console.log(
+    `Movie Title: ${movie.Title}
+    Year: ${movie.Year}
+    IMDB Rating: ${movie.imdbRating}
+    Rotten Tomatoes Rating: ${movie.Ratings[1].Value}
+    Country: ${movie.Country}
+    Language: ${movie.Language}
+    Plot: ${movie.Plot}
+    Actors: ${movie.Actors}`
+);
+
   })
   .catch(function(error) {
-    if (error.response) {}
+    if (error.response) {
+        console.log("If you haven't watched Mr. Nobody, then you should: http://www.imdb.com/title/tt0485947/")
+    }
   });
 }
 
-movie()
+// movie()
+
 
 function song() {
 
@@ -35,19 +48,30 @@ spotify.search({ type: 'track', query: 'Secrets', limit:1 }, function(err, data)
 });
 
 }
-song()
+// song()
 
 
-// function concert() {
-//     axios.get(`https://rest.bandsintown.com/artists/"artist${search}/events?app_id=codingbootcamp`).then(
-//         function(response) {
-//           console.log("The movie's rating is: " + response.data.imdbRating);
-//         })
-//         .catch(function(error) {
-//           if (error.response) {}
-//         });
-// }
+function concert() {
 
+var moment = require('moment');
+
+axios.get(`https://rest.bandsintown.com/artists/${userInput}/events?app_id=codingbootcamp`).then(
+    function(response) {
+    
+        var timeFormat = moment(response.data[0].datetime).format("MM/DD/YYYY")
+          console.log(
+              `Venue Name: ${response.data[0].venue.name} 
+              Location (City): ${response.data[0].venue.city} 
+               Date of the Event: ${timeFormat}`
+              )
+        })          
+
+        .catch(function(error) {
+          if (error.response) {}
+        });
+}
+
+concert()
 
 // function dowhatitsays() {
 
