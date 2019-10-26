@@ -2,10 +2,26 @@ require("dotenv").config();
 var keys = require("./keys.js");
 var fs = require("fs");
 var axios = require("axios");
-var userInput = process.argv[2];
+var command = process.argv[2];
+var userInput = process.argv[3];
+
+switch (command) {
+    case "concert-this":
+        concert(userInput);
+        break;
+    case "spotify-this-song":
+        song(userInput);
+        break;
+    case "movie-this":
+        movie(userInput);
+        break;
+    case "do-what-it-says":
+        dowhatitsays(userInput);
+        break;
+};
 
 
-function movie() {
+function movie(userInput) {
 
 axios.get(`https://www.omdbapi.com/?apikey=trilogy&t=${userInput}&type=movie`).then(
   function(response) {
@@ -30,10 +46,8 @@ console.log(
   });
 }
 
-// movie()
 
-
-function song() {
+function song(userInput) {
 
 var Spotify = require('node-spotify-api');
  
@@ -48,22 +62,22 @@ spotify.search({ type: 'track', query: 'Secrets', limit:1 }, function(err, data)
 });
 
 }
-// song()
 
 
-function concert() {
+function concert(userInput) {
 
 var moment = require('moment');
 
 axios.get(`https://rest.bandsintown.com/artists/${userInput}/events?app_id=codingbootcamp`).then(
     function(response) {
+        for (var i = 0; i < response.data.length; i++) {
     
-        var timeFormat = moment(response.data[0].datetime).format("MM/DD/YYYY")
+        var timeFormat = moment(response.data[i].datetime).format("MM/DD/YYYY")
           console.log(
-              `Venue Name: ${response.data[0].venue.name} 
-              Location (City): ${response.data[0].venue.city} 
-               Date of the Event: ${timeFormat}`
-              )
+              `Venue Name: ${response.data[i].venue.name} 
+              Location (City): ${response.data[i].venue.city} 
+               Date of the Event: ${timeFormat}`)
+           }
         })          
 
         .catch(function(error) {
@@ -71,20 +85,21 @@ axios.get(`https://rest.bandsintown.com/artists/${userInput}/events?app_id=codin
         });
 }
 
-concert()
 
-// function dowhatitsays() {
+function dowhatitsays(userInput) {
 
-// fs.readFile("random.txt", "utf8", function(error, data) {
+fs.readFile("random.txt", "utf8", function(error, data) {
+    console.log(data)
 
-//     // If the code experiences any errors it will log the error to the console.
-//     if (error) {
-//       return console.log(error);
-//     }
+    // If the code experiences any errors it will log the error to the console.
+    if (error) {
+      return console.log(error);
+    }
   
-//     // We will then print the contents of data
-//     console.log(data)
-// });
+    // We will then print the contents of data
+    var dataArr = data.split(',');
+        song(dataArr[0], dataArr[1]);
+});
 
 
 // // Next, we store the text given to us from the command line.
@@ -101,4 +116,4 @@ concert()
 
 // });
 
-// }
+}
