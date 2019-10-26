@@ -24,14 +24,12 @@ switch (command) {
 
 
 function movie(userInput) {
+    if (!userInput) {
+        userInput = "Mr. Nobody"}
 
     axios.get(`https://www.omdbapi.com/?apikey=trilogy&t=${userInput}&type=movie`).then(
     function(response) {
 
-        if (!userInput) {
-            console.log("If you haven't watched Mr. Nobody, then you should: http://www.imdb.com/title/tt0485947/")
-            console.log("Its on Netflix!")
-        }
 
         var movie = response.data
         var movieInfo = 
@@ -58,7 +56,10 @@ function movie(userInput) {
 function song(userInput) {
 
     var spotify = new Spotify(keys.spotify);
- 
+
+    if (!userInput) {
+        userInput = "The Sign"}
+
     spotify.search({ type: 'track', query: userInput}, function(err, data) {
         var songData =       
          `Artist Name: ${data.tracks.items[0].artists[0].name}
