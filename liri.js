@@ -5,7 +5,7 @@ var axios = require("axios");
 var Spotify = require('node-spotify-api');
 var moment = require('moment');
 var command = process.argv[2];
-var userInput = process.argv[3];
+var userInput = process.argv.slice(3).join(' ');
 
 switch (command) {
     case "concert-this":
